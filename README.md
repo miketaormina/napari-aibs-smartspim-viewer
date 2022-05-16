@@ -9,6 +9,8 @@
 
 Load all channels and pyramid levels using available `napari_config.json` file.
 
+To open a data set in a napari viewer, use `File->Open File(s)...` and choose the `napari_config.json` in the experiment folder. This file specifies the channels present and the pyramid levels contained in each. I also makes a guess at assigning color maps and contrast limits.
+
 ----------------------------------
 
 This [napari] plugin was generated with [Cookiecutter] using [@napari]'s [cookiecutter-napari-plugin] template.
@@ -23,9 +25,23 @@ https://napari.org/plugins/index.html
 
 ## Installation
 
-You can install `napari-aibs-smartspim-viewer` via [pip]:
+<!--
+You can install `napari-aibs-smartspim-viewer` via [pip]:~~
 
     pip install napari-aibs-smartspim-viewer
+-->
+Create an environment using Python 3.8+:
+
+    conda create -n aibs_ss_viewer python=3.8
+    conda activate aibs_ss_viewer
+
+Then clone the repo, navigate to it and pip install:
+
+    cd ~/projects
+    git clone https://github.com/miketaormina/napari-aibs-smartspim-viewer.git
+    cd napari-aibs-smartspim-viewer.git
+    pip install -e .
+    
 
 
 

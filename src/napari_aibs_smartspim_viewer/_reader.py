@@ -6,6 +6,9 @@ implement multiple readers or even other plugin contributions. see:
 https://napari.org/plugins/guides.html?#readers
 """
 import numpy as np
+from pathlib import Path
+from dask import array as da
+import json
 
 
 def napari_get_reader(path):
@@ -29,11 +32,15 @@ def napari_get_reader(path):
         path = path[0]
 
     # if we know we cannot read the file, we immediately return None.
-    if not path.endswith(".npy"):
+    if not (path.endswith(".json") or path.endswith(".npy")):
         return None
 
     # otherwise we return the *function* that can read ``path``.
-    return reader_function
+    path = Path(path)
+    if path.suffix == '.json':
+        return napari_json_reader
+    elif path.suffix == '.npy':
+        return reader_function
 
 
 def reader_function(path):
@@ -70,3 +77,27 @@ def reader_function(path):
 
     layer_type = "image"  # optional, default is "image"
     return [(data, add_kwargs, layer_type)]
+
+def napari_json_reader(path):
+    data_list = []
+    path = Path(path)
+    with open(path, 'r') as f:
+        config = json.load(f)
+    for name, ch_info in config.items():
+        zarr_file = path.parent.joinpath(ch_info['zarr_file'])
+        nlevels = ch_info['nlevels']
+        colormap = ch_info['color']
+        contrast_limits = ch_info['contrast']
+        name = ch_info['excitation']
+        if nlevels == 1:
+            try:
+                data = [da.from_zarr(str(zarr_file), i) for i in range(nlevels)]        
+            except KeyError:
+                data = da.from_zarr(str(zarr_file))
+        else:
+            data = [da.from_zarr(str(zarr_file), i) for i in range(nlevels)]
+        layer_type = 'image'
+        add_kwargs = {'name':name, 'colormap':colormap, 'contrast_limits':contrast_limits,\
+            'blending':'additive',}
+        data_list.append((data, add_kwargs, layer_type))
+    return data_list
