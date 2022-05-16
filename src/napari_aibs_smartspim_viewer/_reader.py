@@ -32,14 +32,14 @@ def napari_get_reader(path):
         path = path[0]
 
     # if we know we cannot read the file, we immediately return None.
-    if not path.endswith(".json"):
+    if not (path.endswith(".json") or path.endswith(".npy")):
         return None
 
     # otherwise we return the *function* that can read ``path``.
     path = Path(path)
     if path.suffix == '.json':
         return napari_json_reader
-    else:
+    elif path.suffix == '.npy':
         return reader_function
 
 
