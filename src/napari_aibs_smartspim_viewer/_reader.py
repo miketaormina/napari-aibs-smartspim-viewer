@@ -89,7 +89,13 @@ def napari_json_reader(path):
         colormap = ch_info['color']
         contrast_limits = ch_info['contrast']
         name = ch_info['excitation']
-        data = [da.from_zarr(str(zarr_file), i) for i in range(nlevels)]
+        if nlevels == 1:
+            try:
+                data = [da.from_zarr(str(zarr_file), i) for i in range(nlevels)]        
+            except KeyError:
+                data = da.from_zarr(str(zarr_file))
+        else:
+            data = [da.from_zarr(str(zarr_file), i) for i in range(nlevels)]
         layer_type = 'image'
         add_kwargs = {'name':name, 'colormap':colormap, 'contrast_limits':contrast_limits,\
             'blending':'additive',}
