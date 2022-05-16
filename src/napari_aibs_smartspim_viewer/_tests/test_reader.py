@@ -42,7 +42,7 @@ def test_reader(tmp_path):
     assert isinstance(layer_data_tuple, tuple) and len(layer_data_tuple) > 0
 
     # make sure it's the same as it started
-    np.testing.assert_allclose(original_data, layer_data_tuple[0])
+    np.testing.assert_allclose(original_data, np.squeeze(layer_data_tuple[0]))
 
 
 def test_get_reader_pass():
