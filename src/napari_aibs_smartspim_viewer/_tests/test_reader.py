@@ -10,7 +10,7 @@ def test_reader(tmp_path):
 
     # write some fake data using your supported file format
     #my_test_file = str(tmp_path / "myfile.npy")
-    original_data = np.random.rand(20, 20)
+    original_data = da.random.randint(0, 255, (20,20),)
     #np.save(my_test_file, original_data)
     
     my_test_file_zarr = str(tmp_path / "zdata.zr")
