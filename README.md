@@ -34,14 +34,18 @@ Create an environment using Python 3.8+:
 
     conda create -n aibs_ss_viewer python=3.8
     conda activate aibs_ss_viewer
+    pip install "napari[all]"
 
-Then clone the repo, navigate to it and pip install:
+Then clone the repo, navigate to it and pip install (in the example below it is going to a `projects` folder in the home directory, but it can go wherever you prefer):
 
     cd ~/projects
     git clone https://github.com/miketaormina/napari-aibs-smartspim-viewer.git
-    cd napari-aibs-smartspim-viewer.git
+    cd napari-aibs-smartspim-viewer
     pip install -e .
-    
+
+If you need a full installation (including, e.g., testing support and napari itself) you can use the command:
+
+    pip install -e ".[testing]"    
 
 
 
