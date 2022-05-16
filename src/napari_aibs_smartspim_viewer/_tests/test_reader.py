@@ -15,7 +15,7 @@ def test_reader(tmp_path):
     
     my_test_file_zarr = str(tmp_path / "zdata.zr")
     my_test_file = str(tmp_path / "myfile.json")
-    da.to_zarr(original_data, my_test_file_zarr)
+    da.to_zarr(original_data, my_test_file_zarr, component='0')
     json_dict = {
         "zdata": {
         "zarr_file": "zdata.zr",
